@@ -7,6 +7,13 @@ module StringFunctions =
         |> List.map f
         |> String.concat " "
 
+    // Haha lol just call word.ToUpper() hahahhaha
+    let stringToUpper (word: string): string =
+        Seq.toList word
+        |> List.map System.Char.ToUpper
+        |> Array.ofList
+        |> System.String.Concat
+
 module PigLatin =
     let toPigLatinWord (word: string): string =
         let isVowel (c: char) =
