@@ -3,15 +3,20 @@
 open Types
 open Stuff
 
-// Define a function to construct a message to print
-let from whom =
-    sprintf "from %s" whom
+let studentDemo = 
+    printfn "All students"
+    Records.students
+    |> Records.printStudents
+    
+    printfn "Good students"
+    Records.students
+    |> List.filter Records.goodStudents
+    |> Records.printStudents
 
 [<EntryPoint>]
 let main argv =
-    // greet ["Ammon"; "Mark"]
     // PigLatin.toPigLatinFile "input1.txt" |> ignore
     // Recursion.factorial 20L
     // |> printfn "%d"
-    Records.printPeople
+    studentDemo
     0 // return an integer exit code
