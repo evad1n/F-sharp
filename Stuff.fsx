@@ -81,3 +81,9 @@ let greet (people: string list) =
     people
     |> List.map (fun person -> "Hello " + person + "!")
     |> List.iter (fun greeting -> printfn "%s" greeting)
+
+module Recursion =
+    let rec factorial (n: int64): int64 =
+        match n with
+        | 0L -> 1L
+        | n -> n * factorial (n - 1L)
