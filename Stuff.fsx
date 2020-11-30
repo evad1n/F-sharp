@@ -1,3 +1,5 @@
+open System.IO
+
 module StringFunctions =
     let mapText (text: string) f: string =
         (text.Split ' ')
@@ -6,7 +8,7 @@ module StringFunctions =
         |> String.concat " "
 
 module PigLatin =
-    let toPigLatin (word: string): string =
+    let toPigLatinWord (word: string): string =
         let isVowel (c: char) =
             match c with
             | 'a'
@@ -21,7 +23,34 @@ module PigLatin =
             | 'U' -> true
             | _ -> false
 
+        // Check for ending punctuation marks
+        let ignore (c: char) =
+            match c with
+            | '!'
+            | '?'
+            | '''
+            | '.'
+            | '"'
+            | '`' -> true
+            | _ -> false
+
+        // FIX: Don't move punctuation
+
         if isVowel word.[0] then word + "yay" else word.[1..] + string (word.[0]) + "ay"
+
+    let toPigLatinText (text: string): string =
+        StringFunctions.mapText text toPigLatinWord
+
+    let toPigLatinFile (file: string) =
+        let text = File.ReadAllText(file)
+        printfn "%A" text
+        let pigText = toPigLatinText text
+
+        // Check if pig folder exists
+        if not (Directory.Exists("pig"))
+        then Directory.CreateDirectory("./pig") |> ignore
+
+        File.WriteAllText("pig/pig-" + file, pigText)
 
 
 module ListStuff =

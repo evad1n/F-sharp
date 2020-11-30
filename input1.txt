@@ -1,0 +1,6 @@
+This will be converted to pig latin. yeehaw
+
+Time to refactor…
+It is obvious that there is significant duplicate code between these two functions. How can we refactor?
+
+Both functions pop two values from the stack, apply some sort of binary function, and then push the result back on the stack. This leads us to refactor out the common code into a “binary” function that takes a two parameter math function as a parameter:

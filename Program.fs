@@ -10,4 +10,5 @@ let from whom =
 [<EntryPoint>]
 let main argv =
     greet ["Ammon"; "Mark"]
+    PigLatin.toPigLatinFile "input1.txt" |> ignore
     0 // return an integer exit code

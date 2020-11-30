@@ -10,3 +10,6 @@ https://docs.microsoft.com/en-us/dotnet/fsharp/get-started/get-started-vscode
 https://dotnet.microsoft.com/learn/languages/fsharp-hello-world-tutorial/run
 
 [Online F# Shell](https://tryfsharp.fsbolero.io/)
+
+
+[Calculator](https://fsharpforfunandprofit.com/posts/stack-based-calculator/)
