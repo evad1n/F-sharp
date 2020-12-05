@@ -8,3 +8,4 @@
 # F# Talking Points
 
 - Pipe Operator "|>"
+- Hella Cringe ngl
