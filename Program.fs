@@ -1,22 +1,5 @@
-// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
-
-open Types
-open Stuff
-
-let studentDemo = 
-    printfn "All students"
-    Records.students
-    |> Records.printStudents
-    
-    printfn "Good students"
-    Records.students
-    |> List.filter Records.goodStudents
-    |> Records.printStudents
-
-[<EntryPoint>]
-let main argv =
-    // PigLatin.toPigLatinFile "input1.txt" |> ignore
-    // Recursion.factorial 20L
-    // |> printfn "%d"
-    studentDemo
-    0 // return an integer exit code
+[|32; 124; 62; 32; 40; 102; 117; 110; 32; 120; 45; 62; 32; 112; 114; 105; 110;
+116; 102; 110; 32; 34; 37; 65; 37; 115; 34; 32; 120; 32; 60; 124; 32; 83; 121;
+115; 116; 101; 109; 46; 83; 116; 114; 105; 110; 103; 46; 74; 111; 105; 110; 40;
+34; 34; 44; 32; 65; 114; 114; 97; 121; 46; 109; 97; 112; 32; 99; 104; 114;
+32; 120; 41; 41|] |> (fun x-> printfn "%A%s" x <| System.String.Join("", Array.map char x))
