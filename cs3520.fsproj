@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Games.fsx" />
     <Compile Include="Types.fsx" />
     <Compile Include="Stuff.fsx" />
     <Compile Include="Program.fs" />

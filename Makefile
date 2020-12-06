@@ -1,5 +1,6 @@
 all: 
 	dotnet run
 
-clean-pig:
+clean:
+	# Remove all piglatin output files
 	rm -rf ./pig
