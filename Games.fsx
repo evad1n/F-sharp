@@ -121,14 +121,18 @@ let gameOver (board, _): bool =
     (emptyTileIndices board).Length = 0
     && newBoard = board
 
+let format (num: int) (len: int) = printf "| %-*d" (len - 1) num
+
 let printRow (row: int list): unit =
+    printfn "|       |       |       |       |"
     row
-    |> List.iter (fun x -> if x = 0 then printf "|   " else printf "| %d " x)
-    printfn "|\n+---+---+---+---+"
+    |> List.iter (fun x -> if x = 0 then printf "|       " else format x 7)
+    printfn "|\n|       |       |       |       |"
+    printfn "+-------+-------+-------+-------+"
 
 let printState (board: int list, score: int): unit =
     Console.Clear()
-    printfn "+---+---+---+---+"
+    printfn "+-------+-------+-------+-------+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
     printfn "Score: %d" score
@@ -146,7 +150,9 @@ let doMove (board: int list, score: int) (move: int list * int -> int list * int
     let (newBoard, addedScore) = move (board, score)
 
     let newState =
-        (addNewTile newBoard, score + addedScore)
+        if newBoard <> board
+        then (addNewTile newBoard, score + addedScore)
+        else (board, score)
 
     printState newState
     newState
