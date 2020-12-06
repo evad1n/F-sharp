@@ -12,7 +12,7 @@ let addNewTile (board: int list) =
     let newVal = if (r.Next 10) < 8 then 2 else 4
 
     board
-    |> List.mapi (fun i x -> if i = idx then newVal else x)
+    |> List.mapi (fun i x -> if i = indices.[idx] then newVal else x)
 
 
 let createBoard (): int list =
@@ -37,22 +37,31 @@ let createBoard (): int list =
     board <- (addNewTile board)
     board
 
-let moveUp (board: int list) (score: int): int list * int = (board, score)
-let moveDown (board: int list) (score: int): int list * int = (board, score)
-let moveLeft (board: int list) (score: int): int list * int = (board, score)
-let moveRight (board: int list) (score: int): int list * int = (board, score)
+let moveUp (state: int list * int): int list * int = state
+let moveDown (state: int list * int): int list * int = state
+let moveLeft (state: int list * int): int list * int = state
+let moveRight (state: int list * int): int list * int = state
 
-let gameOver board: bool = false
+let gameOver (board, score): bool =
+    let (newBoard, _) =
+        (moveUp (board, 0)
+         |> moveDown
+         |> moveLeft
+         |> moveRight)
+    // Board is full and no moves affect state
+    (emptyTileIndices board).Length = 0
+    && newBoard = board
 
 let printRow (row: int list): unit =
     row
     |> List.iter (fun x -> if x = 0 then printf "|   " else printf "| %d " x)
     printfn "|\n+---+---+---+---+"
 
-let printBoard (board: int list): unit =
+let printState (board: int list, score: int): unit =
     printfn "+---+---+---+---+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
+    printfn "Score: %d" score
 
 let rec getMove () =
     let key = Console.ReadKey().Key
@@ -63,23 +72,18 @@ let rec getMove () =
     | ConsoleKey.RightArrow -> moveRight
     | _ -> getMove ()
 
-let doMove (board: int list) (score: int) (move: int list -> int -> int list * int): int list * int =
-    let mutable (newBoard, addedScore) = move board score
+let doMove (board: int list, score: int) (move: int list * int -> int list * int): int list * int =
+    let mutable (newBoard, addedScore) = move (board, score)
     let newScore = score + addedScore
     newBoard <- addNewTile board
-    printBoard newBoard
-    printfn "Score: %d" newScore
+    printState (newBoard, newScore)
     (newBoard, newScore)
 
 let go2048 () =
     printfn "Let's play 2048!\n"
-    let mutable board = createBoard ()
-    let mutable score = 0
-    printBoard board
-    printfn "Score: %d" score
-    while not (gameOver board) do
-        let newBoard, newScore = (getMove () |> doMove board score)
-        board <- newBoard
-        score <- newScore
+    let mutable state = (createBoard (), 0)
+    printState state
+    while not (gameOver state) do
+        state <- (getMove () |> doMove state)
 
     printfn "Game Over!"
