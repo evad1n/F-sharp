@@ -58,6 +58,7 @@ let getCols (board: int list): int list list =
                 yield board.[i + j * 4] ]
 
         cols <- cols @ [ newCol ]
+    printfn "%A" cols
     cols
 
 let toCols (rows: int list list) (idx: int) =
@@ -68,35 +69,38 @@ let rowsToCols (up: bool) (rows: int list list) =
     let correctRows = if up then List.rev rows else rows
 
     [ 0 .. correctRows.[0].Length - 1 ]
-    |> List.fold (fun acc i -> acc @ (toCols rows i)) []
+    |> List.fold (fun acc i -> (toCols rows i) @ acc) []
+
+
 
 let moveUp (board: int list, score: int): int list * int =
     let (combinedRows, addedScore) =
         (getCols board
          |> List.map combine
-         |> List.fold (fun acc x ->
-             (printfn "%A" x
-              fst acc @ [ fst x ], snd acc + snd x)) ([], 0))
+         |> List.fold (fun acc x -> (fst acc @ [ fst x ], snd acc + snd x)) ([], 0))
 
-    printfn "%A" combinedRows
+    ((combinedRows |> rowsToCols true), addedScore)
 
-    let newBoard = (combinedRows |> rowsToCols true)
+let moveDown (board: int list, score: int): int list * int =
+    let (combinedRows, addedScore) =
+        ((List.map (List.rev >> combine) (getCols board))
+         |> List.fold (fun acc x -> (fst acc @ [ List.rev (fst x) ], snd acc + snd x)) ([], 0))
 
-    (newBoard, addedScore)
+    ((combinedRows |> rowsToCols false), addedScore)
 
-let moveDown (board: int list, score: int): int list * int = (board, 0)
 let moveLeft (board: int list, score: int): int list * int = (board, 0)
 let moveRight (board: int list, score: int): int list * int = (board, 0)
 
 let gameOver (board, _): bool =
-    let (newBoard, _) =
-        (moveUp (board, 0)
-         |> moveDown
-         |> moveLeft
-         |> moveRight)
-    // Board is full and no moves affect state
-    (emptyTileIndices board).Length = 0
-    && newBoard = board
+    // let (newBoard, _) =
+    //     (moveUp (board, 0)
+    //      |> moveDown
+    //      |> moveLeft
+    //      |> moveRight)
+    // // Board is full and no moves affect state
+    // (emptyTileIndices board).Length = 0
+    // && newBoard = board
+    false
 
 let printRow (row: int list): unit =
     row
@@ -104,7 +108,7 @@ let printRow (row: int list): unit =
     printfn "|\n+---+---+---+---+"
 
 let printState (board: int list, score: int): unit =
-    Console.Clear()
+    // Console.Clear()
     printfn "+---+---+---+---+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
