@@ -50,6 +50,15 @@ let combine (row: int list): int list * int =
         newRow <- 0 :: newRow
     (newRow, score)
 
+let getRows (board: int list): int list list =
+    let mutable rows = []
+    for i in 0 .. 3 do
+        let newRow = board.[i * 4..(i * 4 + 3)]
+
+        rows <- rows @ [ newRow ]
+    // printfn "%A" rows
+    rows
+
 let getCols (board: int list): int list list =
     let mutable cols = []
     for i in 0 .. 3 do
@@ -58,7 +67,6 @@ let getCols (board: int list): int list list =
                 yield board.[i + j * 4] ]
 
         cols <- cols @ [ newCol ]
-    printfn "%A" cols
     cols
 
 let toCols (rows: int list list) (idx: int) =
@@ -88,19 +96,30 @@ let moveDown (board: int list, score: int): int list * int =
 
     ((combinedRows |> rowsToCols false), addedScore)
 
-let moveLeft (board: int list, score: int): int list * int = (board, 0)
-let moveRight (board: int list, score: int): int list * int = (board, 0)
+let moveLeft (board: int list, score: int): int list * int =
+    let (combinedRows, addedScore) =
+        (getRows board
+         |> List.map combine
+         |> List.fold (fun acc x -> (fst acc @ [ List.rev (fst x) ], snd acc + snd x)) ([], 0))
+
+    ((List.concat combinedRows), addedScore)
+
+let moveRight (board: int list, score: int): int list * int =
+    let (combinedRows, addedScore) =
+        ((List.map (List.rev >> combine) (getRows board))
+         |> List.fold (fun acc x -> (fst acc @ [ fst x ], snd acc + snd x)) ([], 0))
+
+    ((List.concat combinedRows), addedScore)
 
 let gameOver (board, _): bool =
-    // let (newBoard, _) =
-    //     (moveUp (board, 0)
-    //      |> moveDown
-    //      |> moveLeft
-    //      |> moveRight)
-    // // Board is full and no moves affect state
-    // (emptyTileIndices board).Length = 0
-    // && newBoard = board
-    false
+    let (newBoard, _) =
+        (moveUp (board, 0)
+         |> moveDown
+         |> moveLeft
+         |> moveRight)
+    // Board is full and no moves affect state
+    (emptyTileIndices board).Length = 0
+    && newBoard = board
 
 let printRow (row: int list): unit =
     row
@@ -108,7 +127,7 @@ let printRow (row: int list): unit =
     printfn "|\n+---+---+---+---+"
 
 let printState (board: int list, score: int): unit =
-    // Console.Clear()
+    Console.Clear()
     printfn "+---+---+---+---+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
