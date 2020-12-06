@@ -29,5 +29,8 @@ let main argv =
     // [0 .. 20]
     // |> List.iter Patterns.fizzbuzz
     // Games.go2048()
-    Ammon.source()
+    // Ammon.source()
+    Games.createBoard()
+    |> Games.printBoard
+
     0 // return an integer exit code
