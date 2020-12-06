@@ -30,8 +30,10 @@ let main argv =
     // |> List.iter Patterns.fizzbuzz
     // Ammon.source()
     // Games.go2048()
-    let x = [2; 2; 4; 0]
-    Games.combine x
+    let b = Games.createBoard()
+    Games.printState (b, 0)
+    Games.getCols b
+    |> List.map Games.combine
     |> printfn "%A"
 
     0 // return an integer exit code

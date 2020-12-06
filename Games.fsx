@@ -16,7 +16,9 @@ let addNewTile (board: int list) =
 
 
 let createBoard (): int list =
-    let mutable board = [for i in 0 .. 15 do yield 0]
+    let mutable board =
+        [ for i in 0 .. 15 do
+            yield 0 ]
 
     board <- (addNewTile board)
     board
@@ -41,13 +43,48 @@ let combine (row: int list): int list * int =
         i <- newidx
         score <- score + addedScore
         newRow <- addedRow :: newRow
+    // Add zeros at the end to pad
+    while newRow.Length < 4 do
+        newRow <- 0 :: newRow
     (newRow, score)
 
-let moveUp (state: int list * int): int list * int = 
+let getCols (board: int list): int list list =
+    let mutable cols = []
+    for i in 0 .. 3 do
+        let newCol =
+            [ for j in 0 .. 3 do
+                yield board.[i + j * 4] ]
 
-let moveDown (state: int list * int): int list * int = state
-let moveLeft (state: int list * int): int list * int = state
-let moveRight (state: int list * int): int list * int = state
+        cols <- cols @ [ newCol ]
+    cols
+
+let toCols (rows: int list list) (idx: int) =
+    [ 0 .. rows.Length - 1 ]
+    |> List.fold (fun acc i -> acc @ [ rows.[i].[idx] ]) []
+
+let rowsToCols (up: bool) (rows: int list list) =
+    let correctRows = if up then List.rev rows else rows
+
+    [ 0 .. correctRows.[0].Length - 1 ]
+    |> List.fold (fun acc i -> acc @ (toCols rows i)) []
+
+let moveUp (board: int list, score: int): int list * int =
+    let (combinedRows, addedScore) =
+        (getCols board
+         |> List.map combine
+         |> List.fold (fun acc x ->
+             (printfn "%A" x
+              fst acc @ [ fst x ], snd acc + snd x)) ([], 0))
+
+    printfn "%A" combinedRows
+
+    let newBoard = (combinedRows |> rowsToCols true)
+
+    (newBoard, score + addedScore)
+
+let moveDown (board: int list, score: int): int list * int = (board, score)
+let moveLeft (board: int list, score: int): int list * int = (board, score)
+let moveRight (board: int list, score: int): int list * int = (board, score)
 
 let gameOver (board, _): bool =
     let (newBoard, _) =
