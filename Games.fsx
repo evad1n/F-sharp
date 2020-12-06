@@ -58,6 +58,7 @@ let printRow (row: int list): unit =
     printfn "|\n+---+---+---+---+"
 
 let printState (board: int list, score: int): unit =
+    Console.Clear()
     printfn "+---+---+---+---+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
