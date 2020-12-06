@@ -35,8 +35,9 @@ let createBoard (): int list =
           0 ]
 
     board <- (addNewTile board)
-    board <- (addNewTile board)
     board
+
+
 
 let printRow (row: int list): unit =
     row |> List.iter (printf "| %d ")
@@ -49,6 +50,9 @@ let printBoard (board: int list): unit =
 
 let go2048 () =
     printfn "Let's play 2048!\n"
+    let mutable board = createBoard ()
     while true do
+        board <- addNewTile board
+        printBoard board
         let key = Console.ReadKey()
         printfn "Key Char is : %A" key
