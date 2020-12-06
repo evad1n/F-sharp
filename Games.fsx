@@ -37,6 +37,12 @@ let createBoard (): int list =
     board <- (addNewTile board)
     board
 
+// Combines a row and produces the new row and the added score
+let combie (row: int list): int list * int =
+    let newRow = row
+    let addedScore = 1
+    (newRow, addedScore)
+
 let moveUp (state: int list * int): int list * int = state
 let moveDown (state: int list * int): int list * int = state
 let moveLeft (state: int list * int): int list * int = state
@@ -73,11 +79,13 @@ let rec getMove () =
     | _ -> getMove ()
 
 let doMove (board: int list, score: int) (move: int list * int -> int list * int): int list * int =
-    let mutable (newBoard, addedScore) = move (board, score)
-    let newScore = score + addedScore
-    newBoard <- addNewTile board
-    printState (newBoard, newScore)
-    (newBoard, newScore)
+    let (newBoard, addedScore) = move (board, score)
+
+    let newState =
+        (addNewTile newBoard, score + addedScore)
+
+    printState newState
+    newState
 
 let go2048 () =
     printfn "Let's play 2048!\n"
