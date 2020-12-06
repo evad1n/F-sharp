@@ -90,24 +90,14 @@ module Classes =
         do printfn "%d, %d" x y
 
 
-
 module DiscriminatedUnions =
     // Can't do nested discrimnated unions -> use classes/inheritance instead
-    type Shape =
-        | Shape2D
-        | Shape3D
 
     type Shape2D =
         | Rectangle of width: float * length: float
         | Circle of radius: float
 
-    type Shape3D =
-        | Box of width: float * length: float * height: float
-        | Sphere of radius: float
-
     let getArea (shape: Shape2D) =
         match shape with
-        | Rectangle(width = w; length = l) -> w * l
-        | Circle(radius = r) -> 3.14159 * r * r
-
-    // let getArea (shape: Shape3D) = 0
+        | Rectangle (width = w; length = l) -> w * l
+        | Circle(radius = r) -> System.Math.PI * r * r

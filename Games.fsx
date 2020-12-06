@@ -37,10 +37,18 @@ let createBoard (): int list =
     board <- (addNewTile board)
     board
 
+let moveUp (board: int list): int list = board
+let moveDown (board: int list): int list = board
+let moveLeft (board: int list): int list = board
+let moveRight (board: int list): int list = board
 
+
+
+let gameOver board: bool = false
 
 let printRow (row: int list): unit =
-    row |> List.iter (printf "| %d ")
+    row
+    |> List.iter (fun x -> if x = 0 then printf "|   " else printf "| %d " x)
     printfn "|\n+---+---+---+---+"
 
 let printBoard (board: int list): unit =
