@@ -1,4 +1,5 @@
 open System.IO
+open System
 
 module StringFunctions =
     let mapText (text: string) f: string =

@@ -37,10 +37,10 @@ let createBoard (): int list =
     board <- (addNewTile board)
     board
 
-let moveUp (board: int list): int list = board
-let moveDown (board: int list): int list = board
-let moveLeft (board: int list): int list = board
-let moveRight (board: int list): int list = board
+let moveUp (board: int list) (score: int): int list * int = (board, score)
+let moveDown (board: int list) (score: int): int list * int = (board, score)
+let moveLeft (board: int list) (score: int): int list * int = (board, score)
+let moveRight (board: int list) (score: int): int list * int = (board, score)
 
 let gameOver board: bool = false
 
@@ -57,15 +57,14 @@ let printBoard (board: int list): unit =
 let rec getMove () =
     let key = Console.ReadKey().Key
     match key with
-    | ConsoleKey.Enter -> printfn "Enter"
     | ConsoleKey.UpArrow -> moveUp
     | ConsoleKey.DownArrow -> moveDown
     | ConsoleKey.LeftArrow -> moveLeft
     | ConsoleKey.RightArrow -> moveRight
-    | _ -> printfn "%A" key
+    | _ -> getMove ()
 
-let doMove (board: int list) (score: int) (move: int list -> int list * int): int list * int =
-    let mutable (newBoard, addedScore) = move board
+let doMove (board: int list) (score: int) (move: int list -> int -> int list * int): int list * int =
+    let mutable (newBoard, addedScore) = move board score
     let newScore = score + addedScore
     newBoard <- addNewTile board
     printBoard newBoard
@@ -76,16 +75,11 @@ let go2048 () =
     printfn "Let's play 2048!\n"
     let mutable board = createBoard ()
     let mutable score = 0
+    printBoard board
+    printfn "Score: %d" score
     while not (gameOver board) do
-        board <- addNewTile board
-        printBoard board
-        let key = Console.ReadKey().Key
-        match key with
-        | ConsoleKey.Enter -> printfn "Enter"
-        | ConsoleKey.UpArrow -> board <- moveUp board
-        | ConsoleKey.DownArrow -> board <- moveDown board
-        | ConsoleKey.LeftArrow -> board <- moveLeft board
-        | ConsoleKey.RightArrow -> board <- moveRight board
-        | _ -> printfn "%A" key
-        printfn "Score: %d" score
+        let newBoard, newScore = (getMove () |> doMove board score)
+        board <- newBoard
+        score <- newScore
+
     printfn "Game Over!"
