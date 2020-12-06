@@ -33,16 +33,18 @@ let mapCombine (row: int list, i) =
 // Combines a row and produces the new row and the added score
 // Combines a row left to right
 let combine (row: int list): int list * int =
+    let crow = List.filter (fun x -> x <> 0) row
+
     // Can't skip iters in F# so this is ugly
     let mutable i = 0
     let mutable newRow = []
     let mutable score = 0
 
-    while i < row.Length do
-        let (newidx, addedRow, addedScore) = mapCombine (row, i)
+    while i < crow.Length do
+        let (newidx, newVal, addedScore) = mapCombine (crow, i)
         i <- newidx
         score <- score + addedScore
-        newRow <- addedRow :: newRow
+        newRow <- newVal :: newRow
     // Add zeros at the end to pad
     while newRow.Length < 4 do
         newRow <- 0 :: newRow
@@ -80,11 +82,11 @@ let moveUp (board: int list, score: int): int list * int =
 
     let newBoard = (combinedRows |> rowsToCols true)
 
-    (newBoard, score + addedScore)
+    (newBoard, addedScore)
 
-let moveDown (board: int list, score: int): int list * int = (board, score)
-let moveLeft (board: int list, score: int): int list * int = (board, score)
-let moveRight (board: int list, score: int): int list * int = (board, score)
+let moveDown (board: int list, score: int): int list * int = (board, 0)
+let moveLeft (board: int list, score: int): int list * int = (board, 0)
+let moveRight (board: int list, score: int): int list * int = (board, 0)
 
 let gameOver (board, _): bool =
     let (newBoard, _) =

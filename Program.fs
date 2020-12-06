@@ -29,11 +29,18 @@ let main argv =
     // [0 .. 20]
     // |> List.iter Patterns.fizzbuzz
     // Ammon.source()
-    // Games.go2048()
-    let b = Games.createBoard()
-    Games.printState (b, 0)
-    Games.getCols b
-    |> List.map Games.combine
-    |> printfn "%A"
+    Games.go2048()
+
+    // let b = Games.createBoard()
+    // Games.printState (b, 0)
+    // Games.getCols b
+    // |> printfn "%A"
+    // Games.getCols b
+    // |> List.map Games.combine
+    // |> printfn "%A"
+
+    // [2; 0; 2; 2]
+    // |> Games.combine
+    // |> printfn "%A"
 
     0 // return an integer exit code
