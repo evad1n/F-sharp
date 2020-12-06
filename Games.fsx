@@ -121,7 +121,22 @@ let gameOver (board, _): bool =
     (emptyTileIndices board).Length = 0
     && newBoard = board
 
-let format (num: int) (len: int) = printf "| %-*d" (len - 1) num
+let format (num: int) (len: int) =
+    let numLen = String.length (sprintf "%i" num)
+    let fHalf = (len - numLen) / 2
+    let sHalf = (len - numLen) - fHalf
+
+    let firstHalf =
+        [ for i in 0 .. fHalf - 1 do
+            yield " " ]
+        |> String.concat ""
+
+    let secondHalf =
+        [ for i in 0 .. sHalf - 1 do
+            yield " " ]
+        |> String.concat ""
+
+    printf "|%s%d%s" firstHalf num secondHalf
 
 let printRow (row: int list): unit =
     printfn "|       |       |       |       |"
