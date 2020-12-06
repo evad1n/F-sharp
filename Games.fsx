@@ -16,39 +16,40 @@ let addNewTile (board: int list) =
 
 
 let createBoard (): int list =
-    let mutable board =
-        [ 0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0
-          0 ]
+    let mutable board = [for i in 0 .. 15 do yield 0]
 
     board <- (addNewTile board)
     board
 
-// Combines a row and produces the new row and the added score
-let combie (row: int list): int list * int =
-    let newRow = row
-    let addedScore = 1
-    (newRow, addedScore)
+let mapCombine (row: int list, i) =
+    if i = row.Length - 1 then (i + 1, row.[i], 0)
+    else if row.[i + 1] = row.[i] then (i + 2, row.[i] + row.[i + 1], row.[i] + row.[i + 1])
+    else (i + 1, row.[i], 0)
 
-let moveUp (state: int list * int): int list * int = state
+
+
+// Combines a row and produces the new row and the added score
+// Combines a row left to right
+let combine (row: int list): int list * int =
+    // Can't skip iters in F# so this is ugly
+    let mutable i = 0
+    let mutable newRow = []
+    let mutable score = 0
+
+    while i < row.Length do
+        let (newidx, addedRow, addedScore) = mapCombine (row, i)
+        i <- newidx
+        score <- score + addedScore
+        newRow <- addedRow :: newRow
+    (newRow, score)
+
+let moveUp (state: int list * int): int list * int = 
+
 let moveDown (state: int list * int): int list * int = state
 let moveLeft (state: int list * int): int list * int = state
 let moveRight (state: int list * int): int list * int = state
 
-let gameOver (board, score): bool =
+let gameOver (board, _): bool =
     let (newBoard, _) =
         (moveUp (board, 0)
          |> moveDown
