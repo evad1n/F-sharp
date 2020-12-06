@@ -178,5 +178,4 @@ let go2048 () =
     printState state
     while not (gameOver state) do
         state <- (getMove () |> doMove state)
-
     printfn "Game Over!"
