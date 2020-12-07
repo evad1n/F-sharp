@@ -211,13 +211,7 @@ let greeting () =
         Console.Clear()
         Console.ResetColor()
 
-let go2048 () =
-    greeting ()
-    let mutable state = (createBoard (), 0)
-    printState state
-    while not (gameOver state) do
-        state <- (getMove () |> doMove state)
-    Console.ForegroundColor <- ConsoleColor.Red
+let goodbye () = 
     printfn "   ____      _      __  __  U _____ u       U  ___ u__     __ U _____ u   ____     
 U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| ___\"|/U |  _\"\\ u  
 \\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|\"          | | | | \\ \\ / //  |  _|\"   \\| |_) |/  
@@ -226,4 +220,54 @@ U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| __
   _)(|_   \\\\    >><<,-,,-.   <<   >>           \\\\     //       <<   >>   //   \\\\_  
  (__)__) (__)  (__)(./  \\.) (__) (__)         (__)   (__)     (__) (__) (__)  (__) 
 "
+
+let getNextMove(i :int) = 
+    match i with
+    | 1 -> moveUp
+    | 2 -> moveLeft
+    | 3 -> moveRight
+    | 4 -> moveDown
+    | _ -> getMove ()
+
+
+let doMoveAlt (board: int list, score: int) (move: int list * int -> int list * int): int list * int =
+    let (newBoard, addedScore) = move (board, score)
+
+    let newState =
+        if newBoard <> board
+        then (addNewTile newBoard, score + addedScore)
+        else (board, score)
+
+    printState newState
+    newState
+
+let play () = 
+    greeting()
+    let mutable state = (createBoard (), 0)
+    printState state
+    while not (gameOver state) do
+        let mutable previous_state = state
+        let mutable best_state = state
+        let mutable current_state = state
+        while (state = previous_state) do
+            let interval = 0.5
+            for e in 5 * int (1.0 / interval) .. -1 .. 1 do None
+            for i in [moveUp ;moveRight;moveLeft;moveDown] do
+                current_state <- ( i |> doMove state)
+
+
+                    
+
+    goodbye ()
+
+let go2048 () =
+    greeting ()
+    let mutable state = (createBoard (), 0)
+    printState state
+    while not (gameOver state) do
+        state <- (getMove () |> doMove state)
+    Console.ForegroundColor <- ConsoleColor.Red
+    goodbye ()
+
+
     // printfn "Game Over!"
