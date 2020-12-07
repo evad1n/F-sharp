@@ -38,7 +38,6 @@ let main argv =
     // Console.ForegroundColor <- Console.ResetColor
     // Ammon.source()
 
-
     Games.go2048()
 
     0 // return an integer exit code
