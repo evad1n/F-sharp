@@ -34,8 +34,11 @@ let main argv =
     // [0 .. 20]
     // |> List.iter Patterns.fizzbuzz
 
+
+    // Console.ForegroundColor <- Console.ResetColor
     // Ammon.source()
 
-    // Games.go2048()
+
+    Games.go2048()
 
     0 // return an integer exit code
