@@ -174,13 +174,14 @@ let doMove (board: int list, score: int) (move: int list * int -> int list * int
     newState
 
 let greeting () =
-    for i in 5 .. -1 .. 1 do
-        match i with
-        | 5 -> Console.ForegroundColor <- ConsoleColor.Red
-        | 4 -> Console.ForegroundColor <- ConsoleColor.Green
-        | 3 -> Console.ForegroundColor <- ConsoleColor.Blue
+    let interval = 0.25
+    for i in 5 * int (1.0 / interval) .. -1 .. 1 do
+        match i % 5 with
+        | 4 -> Console.ForegroundColor <- ConsoleColor.Red
+        | 3 -> Console.ForegroundColor <- ConsoleColor.Green
         | 2 -> Console.ForegroundColor <- ConsoleColor.Yellow
-        | 1 -> Console.ForegroundColor <- ConsoleColor.Magenta
+        | 1 -> Console.ForegroundColor <- ConsoleColor.Cyan
+        | 0 -> Console.ForegroundColor <- ConsoleColor.Magenta
         | _ -> ()
         printfn "
             ╦  ┌─┐┌┬┐┌─┐  ╔═╗┬  ┌─┐┬ ┬
@@ -204,8 +205,9 @@ let greeting () =
     2::::::::::::::::::2   00:::::::::00           4::::::::4   88:::::::::88
     22222222222222222222     000000000             4444444444     888888888
                                                                                \n"
-        printf "In %d..." i
-        System.Threading.Thread.Sleep(1000)
+
+        printf "In %d..." (i / int (1.0 / interval))
+        System.Threading.Thread.Sleep(int (interval * 1000.0))
         Console.Clear()
         Console.ResetColor()
 
@@ -217,8 +219,8 @@ let go2048 () =
         state <- (getMove () |> doMove state)
     Console.ForegroundColor <- ConsoleColor.Red
     printfn "   ____      _      __  __  U _____ u       U  ___ u__     __ U _____ u   ____     
-U /"___|uU  /"\\  uU|' \\/ '|u\\| ___"|/        \\/"_ \\/\\ \\   /"/u\\| ___"|/U |  _"\\ u  
-\\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|"          | | | | \\ \\ / //  |  _|"   \\| |_) |/  
+U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| ___\"|/U |  _\"\\ u  
+\\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|\"          | | | | \\ \\ / //  |  _|\"   \\| |_) |/  
  | |_| |  / ___ \\  | |  | |  | |___      .-,_| |_| | /\\ V /_,-.| |___    |  _ <    
   \\____| /_/   \\_\\ |_|  |_|  |_____|      \\_)-\\___/ U  \\_/-(_/ |_____|   |_| \\_\\   
   _)(|_   \\\\    >><<,-,,-.   <<   >>           \\\\     //       <<   >>   //   \\\\_  
