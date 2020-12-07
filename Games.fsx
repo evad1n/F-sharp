@@ -257,21 +257,22 @@ let alt_move (state :int list * int ) :int list * int  =
 
 let play () = 
     greeting()
-    let mutable state = (createBoard (), 0)
-    printState state
-    while not (gameOver state) do
-        let mutable previous_state = state
-        let mutable next_state = state
-        for x in [moveLeft;moveUp;moveRight;moveUp;moveRight;moveUp;] do
-            next_state <- (x |> doMove next_state)
-        while (state = previous_state) do
-            for n in 1 .. 100 do // the higher the numbers the better but it kills the fuck out of your
-                for i in 1 .. 10 do
-                    next_state <- alt_move next_state
-                for i in [moveUp ;moveRight;] do 
-                    next_state <- ( i |> doMove next_state)
-            for i in [moveLeft;] do 
-                state <- ( i |> doMove next_state)
+    // printState state
+    for m in 1 .. 2 do 
+        let mutable state = (createBoard (), 0)
+        while not (gameOver state) do
+            let mutable previous_state = state
+            let mutable next_state = state
+            for x in [moveLeft;moveUp;moveRight;moveUp;moveRight;moveUp;] do
+                next_state <- (x |> doMove next_state)
+            while (state = previous_state) do
+                for n in 1 .. 100 do // the higher the numbers the better but it kills the fuck out of your
+                    for i in 1 .. 10 do
+                        next_state <- alt_move next_state
+                    for i in [moveUp ;moveRight;] do 
+                        next_state <- ( i |> doMove next_state)
+                for i in [moveLeft;] do 
+                    state <- ( i |> doMove next_state)
             
 
     goodbye ()
