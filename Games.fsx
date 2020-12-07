@@ -232,9 +232,9 @@ U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| __
 let getNextMove(i :int) = 
     match i with
     | 1 -> moveUp
-    | 2 -> moveLeft
-    | 3 -> moveRight
-    | 4 -> moveDown
+    | 2 -> moveDown
+    | 3 -> moveLeft
+    | 4 -> moveRight
     | _ -> getMove ()
 
 
@@ -249,19 +249,31 @@ let doMoveAlt (board: int list, score: int) (move: int list * int -> int list * 
     printState newState
     newState
 
+let alt_move (state :int list * int ) :int list * int  = 
+    let mutable next_state = state
+    next_state <- ( moveUp |> doMove state)
+    state
+
+
 let play () = 
     greeting()
     let mutable state = (createBoard (), 0)
     printState state
     while not (gameOver state) do
         let mutable previous_state = state
-        // let mutable next_state = state
-        // while (state = previous_state) do
-        for i in [moveUp ;moveRight;moveLeft;moveDown] do // if you comment these in and indent this loop it will double prioritize up and right moves
-            state <- ( i |> doMove state)
-                // next_state <- ( i |> doMove state)
-                // for i in [moveUp ;moveRight;moveLeft;moveDown] do
-                //     state <- ( i |> doMove next_state)
+        let mutable next_state = state
+        for x in [moveLeft;moveUp;moveRight;moveUp;moveRight;moveUp;] do
+            next_state <- (x |> doMove next_state)
+        while (state = previous_state) do
+            for n in 1 .. 100 do // the higher the numbers the better but it kills the fuck out of your
+                for i in 1 .. 10 do
+                    next_state <- alt_move next_state
+                for i in [moveUp ;moveRight;] do 
+                    next_state <- ( i |> doMove next_state)
+            for i in [moveLeft;] do 
+                state <- ( i |> doMove next_state)
+            
+
     goodbye ()
 
 let go2048 () =
