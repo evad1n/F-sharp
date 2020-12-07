@@ -247,17 +247,9 @@ let play () =
     printState state
     while not (gameOver state) do
         let mutable previous_state = state
-        let mutable best_state = state
-        let mutable current_state = state
         while (state = previous_state) do
-            let interval = 0.5
-            for e in 5 * int (1.0 / interval) .. -1 .. 1 do None
             for i in [moveUp ;moveRight;moveLeft;moveDown] do
-                current_state <- ( i |> doMove state)
-
-
-                    
-
+                state <- ( i |> doMove state)
     goodbye ()
 
 let go2048 () =
