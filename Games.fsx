@@ -178,7 +178,7 @@ let greeting () =
         | 5 -> Console.ForegroundColor <- ConsoleColor.Red
         | 4 -> Console.ForegroundColor <- ConsoleColor.Green
         | 3 -> Console.ForegroundColor <- ConsoleColor.Blue
-        | 2 -> Console.ForegroundColor <- ConsoleColor.Black
+        | 2 -> Console.ForegroundColor <- ConsoleColor.Yellow
         | 1 -> Console.ForegroundColor <- ConsoleColor.Magenta
         | _ -> ()
         printfn "
