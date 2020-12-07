@@ -122,8 +122,8 @@ let gameOver (board, _): bool =
     && newBoard = board
 
 
-let format (num: int) (len: int) =
-    let numLen = String.length (sprintf "%i" num)
+let center (msg: string) (len: int) =
+    let numLen = String.length msg
     let fHalf = (len - numLen) / 2
     let sHalf = (len - numLen) - fHalf
 
@@ -137,12 +137,17 @@ let format (num: int) (len: int) =
             yield " " ]
         |> String.concat ""
 
-    printf "|%s%d%s" firstHalf num secondHalf
+    printf "%s%s%s" firstHalf msg secondHalf
 
 let printRow (row: int list): unit =
     printfn "|       |       |       |       |"
     row
-    |> List.iter (fun x -> if x = 0 then printf "|       " else format x 7)
+    |> List.iter (fun x ->
+        if x = 0 then
+            printf "|       "
+        else
+            printf "|"
+            center (sprintf "%i" x) 7)
     printfn "|\n|       |       |       |       |"
     printfn "+-------+-------+-------+-------+"
 
@@ -151,7 +156,8 @@ let printState (board: int list, score: int): unit =
     printfn "+-------+-------+-------+-------+"
     for row in 0 .. 3 do
         board.[row * 4..row * 4 + 3] |> printRow
-    printfn "Score: %d" score
+    center (sprintf "Score: %d" score) 33
+    printfn ""
 
 let rec getMove () =
     let key = Console.ReadKey().Key
@@ -174,8 +180,8 @@ let doMove (board: int list, score: int) (move: int list * int -> int list * int
     newState
 
 let greeting () =
-    let interval = 0.25
-    for i in 5 * int (1.0 / interval) .. -1 .. 1 do
+    let interval = 0.5
+    for i in 3 * int (1.0 / interval) .. -1 .. 1 do
         match i % 5 with
         | 4 -> Console.ForegroundColor <- ConsoleColor.Red
         | 3 -> Console.ForegroundColor <- ConsoleColor.Green
