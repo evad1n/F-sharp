@@ -173,13 +173,14 @@ let doMove (board: int list, score: int) (move: int list * int -> int list * int
     newState
 
 let greeting () =
-    for i in 5 .. -1 .. 1 do
-        match i with
-        | 5 -> Console.ForegroundColor <- ConsoleColor.Red
-        | 4 -> Console.ForegroundColor <- ConsoleColor.Green
-        | 3 -> Console.ForegroundColor <- ConsoleColor.Blue
-        | 2 -> Console.ForegroundColor <- ConsoleColor.Black
-        | 1 -> Console.ForegroundColor <- ConsoleColor.Magenta
+    let interval = 0.25
+    for i in 5 * int (1.0 / interval) .. -1 .. 1 do
+        match i % 5 with
+        | 4 -> Console.ForegroundColor <- ConsoleColor.Red
+        | 3 -> Console.ForegroundColor <- ConsoleColor.Green
+        | 2 -> Console.ForegroundColor <- ConsoleColor.Yellow
+        | 1 -> Console.ForegroundColor <- ConsoleColor.Cyan
+        | 0 -> Console.ForegroundColor <- ConsoleColor.Magenta
         | _ -> ()
         printfn "
             ╦  ┌─┐┌┬┐┌─┐  ╔═╗┬  ┌─┐┬ ┬
@@ -203,8 +204,9 @@ let greeting () =
     2::::::::::::::::::2   00:::::::::00           4::::::::4   88:::::::::88
     22222222222222222222     000000000             4444444444     888888888
                                                                                \n"
-        printf "In %d..." i
-        System.Threading.Thread.Sleep(1000)
+
+        printf "In %d..." (i / int (1.0 / interval))
+        System.Threading.Thread.Sleep(int (interval * 1000.0))
         Console.Clear()
         Console.ResetColor()
 
