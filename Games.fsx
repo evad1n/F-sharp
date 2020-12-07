@@ -180,8 +180,8 @@ let doMove (board: int list, score: int) (move: int list * int -> int list * int
     newState
 
 let greeting () =
-    let interval = 1.0 
-    for i in 5 * int (1.0 / interval) .. -1 .. 1 do
+    let interval = 0.5
+    for i in 3 * int (1.0 / interval) .. -1 .. 1 do
         match i % 5 with
         | 4 -> Console.ForegroundColor <- ConsoleColor.Red
         | 3 -> Console.ForegroundColor <- ConsoleColor.Green
