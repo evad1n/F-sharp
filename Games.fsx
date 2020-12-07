@@ -218,6 +218,7 @@ let greeting () =
         Console.ResetColor()
 
 let goodbye () = 
+    Console.ForegroundColor <- ConsoleColor.Red
     printfn "   ____      _      __  __  U _____ u       U  ___ u__     __ U _____ u   ____     
 U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| ___\"|/U |  _\"\\ u  
 \\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|\"          | | | | \\ \\ / //  |  _|\"   \\| |_) |/  
@@ -226,6 +227,7 @@ U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| __
   _)(|_   \\\\    >><<,-,,-.   <<   >>           \\\\     //       <<   >>   //   \\\\_  
  (__)__) (__)  (__)(./  \\.) (__) (__)         (__)   (__)     (__) (__) (__)  (__) 
 "
+    Console.ForegroundColor <- ConsoleColor.White
 
 let getNextMove(i :int) = 
     match i with
@@ -253,9 +255,13 @@ let play () =
     printState state
     while not (gameOver state) do
         let mutable previous_state = state
-        while (state = previous_state) do
-            for i in [moveUp ;moveRight;moveLeft;moveDown] do
-                state <- ( i |> doMove state)
+        // let mutable next_state = state
+        // while (state = previous_state) do
+        for i in [moveUp ;moveRight;moveLeft;moveDown] do // if you comment these in and indent this loop it will double prioritize up and right moves
+            state <- ( i |> doMove state)
+                // next_state <- ( i |> doMove state)
+                // for i in [moveUp ;moveRight;moveLeft;moveDown] do
+                //     state <- ( i |> doMove next_state)
     goodbye ()
 
 let go2048 () =
