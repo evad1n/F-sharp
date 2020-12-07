@@ -195,7 +195,16 @@ let go2048 () =
 2::::::::::::::::::2   00:::::::::00           4::::::::4   88:::::::::88   
 22222222222222222222     000000000             4444444444     888888888     
                                                                            \n"
-    System.Threading.Thread.Sleep(3000)
+    printf "In 5..."
+    System.Threading.Thread.Sleep(1000)
+    printf "4..."
+    System.Threading.Thread.Sleep(1000)
+    printf "3..."
+    System.Threading.Thread.Sleep(1000)
+    printf "2..."
+    System.Threading.Thread.Sleep(1000)
+    printf "1..."
+    System.Threading.Thread.Sleep(1000)
     let mutable state = (createBoard (), 0)
     printState state
     while not (gameOver state) do
