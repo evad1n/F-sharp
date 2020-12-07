@@ -121,6 +121,7 @@ let gameOver (board, _): bool =
     (emptyTileIndices board).Length = 0
     && newBoard = board
 
+
 let format (num: int) (len: int) =
     let numLen = String.length (sprintf "%i" num)
     let fHalf = (len - numLen) / 2
@@ -214,4 +215,5 @@ let go2048 () =
     printState state
     while not (gameOver state) do
         state <- (getMove () |> doMove state)
+    Console.ForegroundColor <- ConsoleColor.Red
     printfn "Game Over!"
