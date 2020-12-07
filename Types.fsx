@@ -49,6 +49,7 @@ module Records =
 
     // Pattern matching
     let { First = willFirstName } = will
+    printfn "%s" willFirstName
 
     let students = [ ammon; mark; hunter; will ]
 

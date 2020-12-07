@@ -52,11 +52,11 @@ let combine (row: int list): int list * int =
 
 let getRows (board: int list): int list list =
     let mutable rows = []
+
     for i in 0 .. 3 do
         let newRow = board.[i * 4..(i * 4 + 3)]
 
         rows <- rows @ [ newRow ]
-    // printfn "%A" rows
     rows
 
 let getCols (board: int list): int list list =
@@ -159,7 +159,7 @@ let rec getMove () =
     | ConsoleKey.DownArrow -> moveDown
     | ConsoleKey.LeftArrow -> moveLeft
     | ConsoleKey.RightArrow -> moveRight
-    | _ -> getMove ()
+    | _ -> getMove () // Ask for another move
 
 let doMove (board: int list, score: int) (move: int list * int -> int list * int): int list * int =
     let (newBoard, addedScore) = move (board, score)
