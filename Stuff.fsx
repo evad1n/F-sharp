@@ -42,8 +42,6 @@ module PigLatin =
             | '`' -> true
             | _ -> false
 
-        // FIX: Don't move punctuation
-
         if isVowel word.[0] then word + "yay" else word.[1..] + string (word.[0]) + "ay"
 
     let toPigLatinText (text: string): string =

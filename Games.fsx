@@ -217,19 +217,19 @@ let greeting () =
         Console.Clear()
         Console.ResetColor()
 
-let goodbye () = 
+let goodbye () =
     Console.ForegroundColor <- ConsoleColor.Red
-    printfn "   ____      _      __  __  U _____ u       U  ___ u__     __ U _____ u   ____     
-U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| ___\"|/U |  _\"\\ u  
-\\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|\"          | | | | \\ \\ / //  |  _|\"   \\| |_) |/  
- | |_| |  / ___ \\  | |  | |  | |___      .-,_| |_| | /\\ V /_,-.| |___    |  _ <    
-  \\____| /_/   \\_\\ |_|  |_|  |_____|      \\_)-\\___/ U  \\_/-(_/ |_____|   |_| \\_\\   
-  _)(|_   \\\\    >><<,-,,-.   <<   >>           \\\\     //       <<   >>   //   \\\\_  
- (__)__) (__)  (__)(./  \\.) (__) (__)         (__)   (__)     (__) (__) (__)  (__) 
+    printfn "   ____      _      __  __  U _____ u       U  ___ u__     __ U _____ u   ____
+U /\"___|uU  /\"\\  uU|' \\/ '|u\\| ___\"|/        \\/\"_ \\/\\ \\   /\"/u\\| ___\"|/U |  _\"\\ u
+\\| |  _ / \\/ _ \\/ \\| |\\/| |/ |  _|\"          | | | | \\ \\ / //  |  _|\"   \\| |_) |/
+ | |_| |  / ___ \\  | |  | |  | |___      .-,_| |_| | /\\ V /_,-.| |___    |  _ <
+  \\____| /_/   \\_\\ |_|  |_|  |_____|      \\_)-\\___/ U  \\_/-(_/ |_____|   |_| \\_\\
+  _)(|_   \\\\    >><<,-,,-.   <<   >>           \\\\     //       <<   >>   //   \\\\_
+ (__)__) (__)  (__)(./  \\.) (__) (__)         (__)   (__)     (__) (__) (__)  (__)
 "
     Console.ForegroundColor <- ConsoleColor.White
 
-let getNextMove(i :int) = 
+let getNextMove (i: int) =
     match i with
     | 1 -> moveUp
     | 2 -> moveDown
@@ -249,31 +249,36 @@ let doMoveAlt (board: int list, score: int) (move: int list * int -> int list * 
     printState newState
     newState
 
-let alt_move (state :int list * int ) :int list * int  = 
+let alt_move (state: int list * int): int list * int =
     let mutable next_state = state
-    next_state <- ( moveUp |> doMove state)
+    next_state <- (moveUp |> doMove state)
     state
 
 
-let play () = 
-    greeting()
+let play () =
+    greeting ()
     // printState state
-    for m in 1 .. 2 do 
+    for m in 1 .. 2 do
         let mutable state = (createBoard (), 0)
         while not (gameOver state) do
             let mutable previous_state = state
             let mutable next_state = state
-            for x in [moveLeft;moveUp;moveRight;moveUp;moveRight;moveUp;] do
+            for x in [ moveLeft
+                       moveUp
+                       moveRight
+                       moveUp
+                       moveRight
+                       moveUp ] do
                 next_state <- (x |> doMove next_state)
             while (state = previous_state) do
-                for n in 1 .. 100 do // the higher the numbers the better but it kills the fuck out of your
+                for n in 1 .. 100 do // the higher the numbers the better but it kills the #*@! out of your
                     for i in 1 .. 10 do
                         next_state <- alt_move next_state
-                    for i in [moveUp ;moveRight;] do 
-                        next_state <- ( i |> doMove next_state)
-                for i in [moveLeft;] do 
-                    state <- ( i |> doMove next_state)
-            
+                    for i in [ moveUp; moveRight ] do
+                        next_state <- (i |> doMove next_state)
+                for i in [ moveLeft ] do
+                    state <- (i |> doMove next_state)
+
 
     goodbye ()
 
@@ -285,6 +290,3 @@ let go2048 () =
         state <- (getMove () |> doMove state)
     Console.ForegroundColor <- ConsoleColor.Red
     goodbye ()
-
-
-    // printfn "Game Over!"

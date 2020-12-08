@@ -16,7 +16,6 @@ let studentDemo () =
     |> List.filter Records.goodStudents
     |> Records.printStudents
 
-    
 
 [<EntryPoint>]
 let main argv =
@@ -36,8 +35,9 @@ let main argv =
 
 
     // Console.ForegroundColor <- Console.ResetColor
-    // Ammon.source()
-    Games.play()
+    Ammon.source()
     // Games.go2048()
+    
+    // Games.play()
 
     0 // return an integer exit code
